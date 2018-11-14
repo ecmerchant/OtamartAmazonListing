@@ -1,0 +1,36 @@
+<div class="container">
+
+  <h1 class="bg-primary" style="line-height:50pt;text-indent:20pt">オタマートAmazon出品ツール</h1>
+
+  <h4><strong>ログイン中：<%= @user %></strong></h4>
+  <%= link_to "MWSアカウント管理", accounts_path, :target=>["_blank"] %>
+  &nbsp;
+  <%= link_to "出品パラメータ設定", "/items/set", :target=>["_blank"] %>
+  &nbsp;
+  <%= link_to 'ログアウト', destroy_user_session_path, method: :get %>
+  &nbsp;&nbsp;
+  <%= link_to "管理者専用", "/admin" %>
+
+  <br>
+  <br>
+  <h4><strong>オタマートから情報取得</strong></h4>
+  <button id="done" class="btn btn-primary">オタマート情報取得</button>
+  &nbsp;
+  <button id="make_csv" class="btn btn-primary">CSV作成</button>
+  &nbsp;
+  <% @tt=Time.now.strftime("_%H%M%S") %>
+  <a href="#" id="csv_output" download="list<%= @tt %>.txt" class="btn btn-warning">CSV出力</a>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <button id="csv_upload" class="btn btn-danger">アップロード</button>
+  <br>
+  <br>
+  <br>
+  <div class="progress progress-striped active">
+    <div class="progress-bar" style="width: 0%" id="progressbar"></div>
+  </div>
+  <div id="main"></div>
+  <br>
+  <h4><strong>アップロードCSVの確認</strong></h4>
+  <div id="selected"></div>
+  <div id="csv"></div>
+</div>

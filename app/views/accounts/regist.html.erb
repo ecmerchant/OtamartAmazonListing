@@ -1,0 +1,30 @@
+<div class="container">
+
+  <h1 class="bg-primary" style="line-height:50pt;text-indent:20pt">MWSアカウント情報の登録</h1>
+  <h4><strong>アマゾンのMWSアカウント情報を入力</strong></h4>
+  <br>
+
+  <%= form_for(@account,url:{controller: :accounts,action: :regist},:html => {:class => 'input-group'}) do |f| %>
+
+  <div class="form-group">
+    <label for="AWSkey">AWSアクセスキーID</label>
+    <div class="col-10">
+      <%= f.text_field :AWSkey, :class => 'form-control', :value => @res1 %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="skey">秘密キー</label>
+    <%= f.text_field :skey, :class => 'form-control', :value => @res2 %>
+  </div>
+
+  <div class="form-group">
+    <label for="sellerId">出品者ID</label>
+    <%= f.text_field :sellerId, :class => 'form-control', :value => @res3 %>
+  </div>
+  <br>
+  <br>
+  <%= f.submit "保存", :class => 'btn btn-primary' %>
+  <% end %>
+
+</div>

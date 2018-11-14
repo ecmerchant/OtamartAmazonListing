@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  email: MyString
+  AWSkey: MyString
+  skey: MyString
+  sellerId: MyString
+  price_table: MyText
+  trep_table: MyText
+
+two:
+  email: MyString
+  AWSkey: MyString
+  skey: MyString
+  sellerId: MyString
+  price_table: MyText
+  trep_table: MyText
