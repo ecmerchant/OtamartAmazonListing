@@ -1,6 +1,6 @@
 <div class="container">
 
-  <h1 class="bg-primary" style="line-height:50pt;text-indent:20pt">オタマートAmazon出品ツール</h1>
+  <h1 class="bg-warning text-dark" style="line-height:50pt;text-indent:20pt">オタマートAmazon出品ツール</h1>
 
   <h4><strong>ログイン中：<%= @user %></strong></h4>
   <%= link_to "MWSアカウント管理", accounts_path, :target=>["_blank"] %>
@@ -14,9 +14,9 @@
   <br>
   <br>
   <h4><strong>オタマートから情報取得</strong></h4>
-  <button id="done" class="btn btn-primary">オタマート情報取得</button>
+  <button id="done" class="btn btn-warning">オタマート情報取得</button>
   &nbsp;
-  <button id="make_csv" class="btn btn-primary">CSV作成</button>
+  <button id="make_csv" class="btn btn-warning">CSV作成</button>
   &nbsp;
   <% @tt=Time.now.strftime("_%H%M%S") %>
   <a href="#" id="csv_output" download="list<%= @tt %>.txt" class="btn btn-warning">CSV出力</a>
