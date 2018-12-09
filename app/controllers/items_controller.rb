@@ -47,13 +47,18 @@ class ItemsController < ApplicationController
               logger.debug("=== URL OK ===")
               doc = Nokogiri::HTML.parse(html, nil, charset)
               #商品が出品中の場合
-              original = /"original":\{([\s\S]*?)original/.match(html)[1]
-              title = /"original":\{"name":"([\s\S]*?)"/.match(html)[1]
+              if /"original":\{([\s\S]*?)original/.match(html) != nil then
+                original = /"original":\{([\s\S]*?)original/.match(html)[1]
+                title = /"original":\{"name":"([\s\S]*?)"/.match(html)[1]
+                tags = /"tags":\[([\s\S]*?)\]/.match(original)[1]
+                tags = tags.gsub('"','')
+              else
+                title = /"name":"([\s\S]*?)"/.match(html)[1]
+              end
               logger.debug("========= INFO ==========")
               item_id = /items\/([\s\S]*?)\//.match(url)[1]
               price = /"price":([\s\S]*?),/.match(html)[1]
-              tags = /"tags":\[([\s\S]*?)\]/.match(original)[1]
-              tags = tags.gsub('"','')
+
               condition = /Condition<\/div>([\s\S]*?)<\/div>/.match(html)[1]
               condition = />([\s\S]*?)$/.match(condition)[1]
               delivery = /"delivery_delay_type":([\s\S]*?),/.match(html)[1]
