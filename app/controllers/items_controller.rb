@@ -47,42 +47,34 @@ class ItemsController < ApplicationController
               logger.debug("=== URL OK ===")
               doc = Nokogiri::HTML.parse(html, nil, charset)
               #商品が出品中の場合
-              if /"original":\{([\s\S]*?)original/.match(html) != nil then
-                original = /"original":\{([\s\S]*?)original/.match(html)[1]
-                title = /"original":\{"name":"([\s\S]*?)"/.match(html)[1]
-                tags = /"tags":\[([\s\S]*?)\]/.match(original)[1]
-                tags = tags.gsub('"','')
-              else
-                title = /"name":"([\s\S]*?)"/.match(html)[1]
-              end
+              title = /"name": "([\s\S]*?)"/.match(html)[1]
+
               logger.debug("========= INFO ==========")
               item_id = /items\/([\s\S]*?)\//.match(url)[1]
-              price = /"price":([\s\S]*?),/.match(html)[1]
+              price = /"price": "([\s\S]*?)"/.match(html)[1]
 
-              condition = /Condition<\/div>([\s\S]*?)<\/div>/.match(html)[1]
-              condition = />([\s\S]*?)$/.match(condition)[1]
-              delivery = /"delivery_delay_type":([\s\S]*?),/.match(html)[1]
+              condition = /<p>商品の状態<\/p>([\s\S]*?)<\/div>/.match(html)[1]
+              condition = /<p>([\s\S]*?)<\/p>/.match(condition)[1]
 
-              if delivery.to_i == 1 then
-                delivery = "2~3日で出荷"
-              elsif delivery.to_i == 2 then
-                delivery = "4~7日で出荷"
-              else
-                delivery = "8日以上で出荷"
-              end
+              delivery = /<p>配送日の目安<\/p>([\s\S]*?)<\/div>/.match(html)[1]
+              delivery = /<p>([\s\S]*?)<\/p>/.match(delivery)[1]
 
-              seller = /"seller":\{([\s\S]*?)\}/.match(html)[1]
-              seller_name = /"name":"([\s\S]*?)"/.match(seller)[1]
+              tags = /<p>タグ<\/p>([\s\S]*?)<\/div>/.match(html)[1]
+              tags = /<p>([\s\S]*?)<\/p>/.match(tags)[1]
+              tags = />([\s\S]*?)</.match(tags)[1]
 
-              image_set = /class="item-picture-viewer"([\s\S]*?)class="item-name"/.match(html)[1]
-              #images = /src="([\s\S]*?)"/g.match(images_set)
+
+              seller = /"seller": \{([\s\S]*?)\}/.match(html)[1]
+              seller_name = /"name": "([\s\S]*?)"/.match(seller)[1]
+
+              image_set = /class="item-thumbnail"([\s\S]*?)class="item-detail/.match(html)[1]
               images = image_set.scan(/src="([\s\S]*?)"/)
 
               k = 0
               image = []
-              while k < 3
+              while k < 8
                 if images[k] != nil then
-                  image[k] = images[k]
+                  image[k] = images[k][0].gsub("-thumbnail", "")
                 else
                   image[k] = ""
                 end
@@ -131,7 +123,7 @@ class ItemsController < ApplicationController
             end
           end
 
-          res[i] = [url,title,item_id,price,tags,condition,seller_name,delivery,image[0][0],image[1][0],image[2][0]]
+          res[i] = [url,title,item_id,price,tags,condition,seller_name,delivery,image[0],image[1],image[2]]
           process += 1
           if process > maxnum - 1 then
             break
